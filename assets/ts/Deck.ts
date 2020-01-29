@@ -9,7 +9,7 @@ export default class Deck {
   constructor() {
     this.cards = marks.reduce((prev: Card[], mark: string) => {
       numbers.map(num => {
-        prev.push(new Card({mark: mark, card: num}));
+        prev.push(new Card({mark: mark, number: num}));
       });
       return prev;
     }, []);
