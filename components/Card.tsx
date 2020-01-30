@@ -12,7 +12,9 @@ class Card extends Component<Props, {}> {
 
   render() {
     return (
-      <>{this.props.isOpen ? <View /> : <View style={styles.cardBack} />}</>
+      <View>
+        {this.props.isOpen ? <View /> : <View style={styles.cardBack} />}
+      </View>
     );
   }
 }

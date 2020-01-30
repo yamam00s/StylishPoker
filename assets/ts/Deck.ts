@@ -14,4 +14,16 @@ export default class Deck {
       return prev;
     }, []);
   }
+
+  public shuffle(): void {
+    const {length} = this.cards;
+    for (let i = length - 1; i >= 0; i--) {
+      const random: number = Math.floor(Math.random() * (i + 1));
+      [this.cards[i], this.cards[random]] = [this.cards[random], this.cards[i]];
+    }
+  }
+
+  public deal(num: number): Card[] {
+    return this.cards.slice(0, num);
+  }
 }
