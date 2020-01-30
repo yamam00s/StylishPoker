@@ -1,21 +1,14 @@
 import React, {Component} from 'react';
 import {StyleSheet, View} from 'react-native';
 
-type Props = {
+type CardProps = {
   isOpen: boolean;
 };
 
-class Card extends Component<Props, {}> {
-  constructor(props: any) {
-    super(props);
-  }
-
+class Card extends Component<CardProps, {}> {
   render() {
-    return (
-      <View>
-        {this.props.isOpen ? <View /> : <View style={styles.cardBack} />}
-      </View>
-    );
+    const {isOpen} = this.props;
+    return <View>{isOpen ? <View /> : <View style={styles.cardBack} />}</View>;
   }
 }
 

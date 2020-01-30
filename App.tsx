@@ -1,26 +1,32 @@
 import React, {Component} from 'react';
-import {StyleSheet, Button, View} from 'react-native';
+import {StyleSheet, Button, View, Text} from 'react-native';
 
 //Components
 import Card from './components/Card';
-// import Hand from './components/Hand';
+import Hand from './components/Hand';
 // Class
 import DeckClass from './assets/ts/Deck';
 import CardClass from './assets/ts/Card';
 
+type AppState = {
+  hand: CardClass[];
+};
+
 class App extends Component {
   public readonly deck: DeckClass;
-  public hand: CardClass[];
+  public state: AppState;
 
   constructor(props: any) {
     super(props);
+    this.state = {hand: []};
     this.deck = new DeckClass();
-    this.hand = [];
   }
 
   private dealCards(): void {
     this.deck.shuffle();
-    this.hand = this.deck.deal(5);
+    this.setState({
+      hand: this.deck.deal(5),
+    });
   }
 
   render() {
@@ -32,6 +38,13 @@ class App extends Component {
           onPress={() => this.dealCards()}
         />
         <Card isOpen={false} />
+        <View style={styles.handArea}>
+          {this.state.hand.length ? (
+            <Hand cards={this.state.hand} isOpen={false} />
+          ) : (
+            <Text>カードを配れ</Text>
+          )}
+        </View>
       </View>
     );
   }
@@ -40,9 +53,13 @@ class App extends Component {
 const styles = StyleSheet.create({
   flexView: {
     backgroundColor: 'green',
-    flex: 1,
+    flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  handArea: {
+    margin: 30,
+    backgroundColor: 'black',
   },
 });
 

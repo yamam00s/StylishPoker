@@ -2,35 +2,38 @@ import React, {Component} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 //Components
 import Card from './Card';
+// Class
+import CardClass from '../assets/ts/Card';
 
-type Props = {
-  cards: [];
+type HandProps = {
+  cards: CardClass[];
+  isOpen: boolean;
 };
 
-class Hand extends Component<Props, {}> {
-  constructor(props: any) {
-    super(props);
-  }
-
+class Hand extends Component<HandProps> {
   render() {
-    const {cards} = this.props;
+    const {cards, isOpen} = this.props;
+    console.log(cards);
     return (
-      <View style={styles.handArea}>
-        {/* {cards.map(card => {
-          <Text>{card}</Text>;
-          <Card isOpen={false} />;
-        })} */}
+      <View>
+        {cards.map((card, index) => {
+          <View key={index}>
+            <Text>{card.number}</Text>;
+            <Card isOpen={isOpen} />;
+          </View>;
+        })}
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  handArea: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
+// const styles = StyleSheet.create({
+//   handArea: {
+//     backgroundColor: 'black',
+//     flex: 1,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//   },
+// });
 
 export default Hand;
