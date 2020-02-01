@@ -44,7 +44,7 @@ class App extends Component {
         </View>
         <View style={styles.handArea}>
           {this.state.hand.length ? (
-            <Hand cards={this.state.hand} isOpen={false} />
+            <Hand cards={this.state.hand} isOpen={true} />
           ) : (
             <Text>カードを配れ</Text>
           )}

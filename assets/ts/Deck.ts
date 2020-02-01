@@ -1,6 +1,6 @@
 import Card from './Card';
 
-const marks = ['S', 'H', 'D', 'C'];
+const marks = ['♠️', '❤️', '♦️', '♣️'];
 const numbers = [...Array(13).keys()].map(i => ++i);
 
 export default class Deck {

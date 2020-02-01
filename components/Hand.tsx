@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 //Components
 import Card from './Card';
 // Class
@@ -13,13 +13,12 @@ type HandProps = {
 class Hand extends Component<HandProps> {
   render() {
     const {cards, isOpen} = this.props;
-    console.log(cards);
     return (
       <View style={styles.hand}>
         {cards.map((card, index) => {
           return (
             <View key={index}>
-              <Card isOpen={isOpen} width={60} height={100} />
+              <Card isOpen={isOpen} width={60} height={100} card={card} />
             </View>
           );
         })}
