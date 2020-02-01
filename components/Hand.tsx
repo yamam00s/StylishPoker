@@ -15,25 +15,26 @@ class Hand extends Component<HandProps> {
     const {cards, isOpen} = this.props;
     console.log(cards);
     return (
-      <View>
+      <View style={styles.hand}>
         {cards.map((card, index) => {
-          <View key={index}>
-            <Text>{card.number}</Text>;
-            <Card isOpen={isOpen} />;
-          </View>;
+          return (
+            <View key={index}>
+              <Card isOpen={isOpen} width={60} height={100} />
+            </View>
+          );
         })}
       </View>
     );
   }
 }
 
-// const styles = StyleSheet.create({
-//   handArea: {
-//     backgroundColor: 'black',
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-// });
+const styles = StyleSheet.create({
+  hand: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: 400,
+  },
+});
 
 export default Hand;

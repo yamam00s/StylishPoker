@@ -18,7 +18,9 @@ class App extends Component {
 
   constructor(props: any) {
     super(props);
-    this.state = {hand: []};
+    this.state = {
+      hand: [],
+    };
     this.deck = new DeckClass();
   }
 
@@ -32,12 +34,14 @@ class App extends Component {
   render() {
     return (
       <View style={styles.flexView}>
-        <Button
-          title="カードを配る"
-          color="black"
-          onPress={() => this.dealCards()}
-        />
-        <Card isOpen={false} />
+        <View style={styles.deckArea}>
+          <Button
+            title="カードを配る"
+            color="black"
+            onPress={() => this.dealCards()}
+          />
+          <Card isOpen={false} width={100} height={150} />
+        </View>
         <View style={styles.handArea}>
           {this.state.hand.length ? (
             <Hand cards={this.state.hand} isOpen={false} />
@@ -53,13 +57,17 @@ class App extends Component {
 const styles = StyleSheet.create({
   flexView: {
     backgroundColor: 'green',
-    flex: 2,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  deckArea: {
+    flex: 3,
     justifyContent: 'center',
     alignItems: 'center',
   },
   handArea: {
-    margin: 30,
-    backgroundColor: 'black',
+    flex: 1,
   },
 });
 
