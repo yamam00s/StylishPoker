@@ -10,6 +10,13 @@ import CardClass from './assets/ts/Card';
 
 type AppState = {
   hand: CardClass[];
+  deck: CardClass[];
+};
+
+const isCardIncludes = (deck: CardClass[], card: CardClass): boolean => {
+  return deck.some(
+    item => item.mark === card.mark && item.number === card.number,
+  );
 };
 
 class App extends Component {
@@ -20,6 +27,7 @@ class App extends Component {
     super(props);
     this.state = {
       hand: [],
+      deck: [],
     };
     this.deck = new DeckClass();
   }
@@ -31,7 +39,20 @@ class App extends Component {
     });
   }
 
+  private changeCards(): void {
+    const result = [...this.deck.cards, ...this.state.hand].filter(card => {
+      return !(
+        isCardIncludes(this.deck.cards, card) &&
+        isCardIncludes(this.state.hand, card)
+      );
+    });
+    this.setState({
+      deck: result,
+    });
+  }
+
   render() {
+    const isDeal: boolean = this.state.hand.length > 0;
     return (
       <View style={styles.flexView}>
         <View style={styles.deckArea}>
@@ -41,9 +62,16 @@ class App extends Component {
             onPress={() => this.dealCards()}
           />
           <Card isOpen={false} width={100} height={150} />
+          {isDeal && (
+            <Button
+              title="チェンジする"
+              color="black"
+              onPress={() => this.changeCards()}
+            />
+          )}
         </View>
         <View style={styles.handArea}>
-          {this.state.hand.length ? (
+          {isDeal ? (
             <Hand cards={this.state.hand} isOpen={true} />
           ) : (
             <Text>カードを配れ</Text>
