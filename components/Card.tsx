@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: 4,
-    borderWidth: 5.5,
+    borderWidth: 2,
     borderColor: 'black',
   },
   cardFaceNumberTop: {

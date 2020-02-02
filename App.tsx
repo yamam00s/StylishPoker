@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {StyleSheet, Button, View, Text} from 'react-native';
-
 //Components
 import Card from './components/Card';
 import Hand from './components/Hand';
@@ -56,13 +55,14 @@ class App extends Component {
     return (
       <View style={styles.flexView}>
         <View style={styles.deckArea}>
-          <Button
-            title="カードを配る"
-            color="black"
-            onPress={() => this.dealCards()}
-          />
           <Card isOpen={false} width={100} height={150} />
-          {isDeal && (
+          {!isDeal ? (
+            <Button
+              title="カードを配る"
+              color="black"
+              onPress={() => this.dealCards()}
+            />
+          ) : (
             <Button
               title="チェンジする"
               color="black"
@@ -85,7 +85,7 @@ class App extends Component {
 const styles = StyleSheet.create({
   flexView: {
     backgroundColor: 'green',
-    flex: 1,
+    flex: 3,
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, TouchableOpacity} from 'react-native';
 //Components
 import Card from './Card';
 // Class
@@ -9,17 +9,44 @@ type HandProps = {
   cards: CardClass[];
   isOpen: boolean;
 };
+type AppState = {
+  isSelected: CardClass[];
+};
 
 class Hand extends Component<HandProps> {
+  public state: AppState;
+
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      isSelected: [],
+    };
+  }
+
+  private selectCard(card: CardClass): void {
+    const result = [...this.state.isSelected, card];
+    this.setState({
+      isSelected: result,
+    });
+    return;
+  }
+
   render() {
     const {cards, isOpen} = this.props;
+    console.log();
     return (
       <View style={styles.hand}>
         {cards.map((card, index) => {
+          const isSelected = (): boolean => {
+            return this.state.isSelected.some(item => item === card);
+          };
           return (
-            <View key={index}>
+            <TouchableOpacity
+              onPress={() => this.selectCard(card)}
+              style={isSelected() && styles.isSelected}
+              key={index}>
               <Card isOpen={isOpen} width={60} height={100} card={card} />
-            </View>
+            </TouchableOpacity>
           );
         })}
       </View>
@@ -28,6 +55,9 @@ class Hand extends Component<HandProps> {
 }
 
 const styles = StyleSheet.create({
+  isSelected: {
+    opacity: 0.5,
+  },
   hand: {
     flex: 1,
     flexDirection: 'row',
