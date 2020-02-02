@@ -27,7 +27,7 @@ class Hand extends Component<HandProps> {
   private selectCard(card: CardClass): void {
     const result = [...this.state.selectedCards, card];
     this.setState({
-      isSelected: result,
+      selectedCards: new Set(result),
     });
     this.props.setSelectedCards(result);
   }
@@ -37,14 +37,13 @@ class Hand extends Component<HandProps> {
     return (
       <View style={styles.hand}>
         {cards.map((card, index) => {
-          const isSelected = (): boolean => {
-            return this.state.selectedCards.some(item => item === card);
-          };
+          /* 選択カードのスタイル変える用の関数
+            const isSelected = (): boolean => {
+              return this.state.selectedCards.some(item => item === card);
+            };
+          */
           return (
-            <TouchableOpacity
-              onPress={() => this.selectCard(card)}
-              style={isSelected() && styles.isSelected}
-              key={index}>
+            <TouchableOpacity onPress={() => this.selectCard(card)} key={index}>
               <Card isOpen={isOpen} width={60} height={100} card={card} />
             </TouchableOpacity>
           );
