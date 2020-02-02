@@ -4,18 +4,12 @@ import {StyleSheet, Button, View, Text} from 'react-native';
 import Card from './components/Card';
 import Hand from './components/Hand';
 // Class
-import DeckClass from './assets/ts/Deck';
+import DeckClass, {checkCardIncludes} from './assets/ts/Deck';
 import CardClass from './assets/ts/Card';
 
 type AppState = {
   hand: CardClass[];
-  deck: CardClass[];
-};
-
-const isCardIncludes = (deck: CardClass[], card: CardClass): boolean => {
-  return deck.some(
-    item => item.mark === card.mark && item.number === card.number,
-  );
+  selectedCards: CardClass[];
 };
 
 class App extends Component {
@@ -26,10 +20,16 @@ class App extends Component {
     super(props);
     this.state = {
       hand: [],
-      deck: [],
+      selectedCards: [],
     };
     this.deck = new DeckClass();
   }
+
+  public setSelectedCards = (selectedCards: CardClass[]) => {
+    this.setState({
+      selectedCards: selectedCards,
+    });
+  };
 
   private dealCards(): void {
     this.deck.shuffle();
@@ -39,14 +39,13 @@ class App extends Component {
   }
 
   private changeCards(): void {
-    const result = [...this.deck.cards, ...this.state.hand].filter(card => {
-      return !(
-        isCardIncludes(this.deck.cards, card) &&
-        isCardIncludes(this.state.hand, card)
-      );
-    });
+    this.deck.createExcludeDeck(this.state.hand);
+    const excludeHand = this.state.hand.filter(
+      card => !checkCardIncludes(this.state.selectedCards, card),
+    );
+    const dearthLength = 5 - excludeHand.length;
     this.setState({
-      deck: result,
+      hand: [...excludeHand, ...this.deck.deal(dearthLength, true)],
     });
   }
 
@@ -72,7 +71,11 @@ class App extends Component {
         </View>
         <View style={styles.handArea}>
           {isDeal ? (
-            <Hand cards={this.state.hand} isOpen={true} />
+            <Hand
+              cards={this.state.hand}
+              isOpen={true}
+              setSelectedCards={this.setSelectedCards}
+            />
           ) : (
             <Text>カードを配れ</Text>
           )}

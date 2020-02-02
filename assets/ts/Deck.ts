@@ -5,6 +5,7 @@ const numbers = [...Array(13).keys()].map(i => ++i);
 
 export default class Deck {
   public readonly cards!: Card[];
+  public excludeDeck!: Card[];
 
   constructor() {
     this.cards = marks.reduce((prev: Card[], mark: string) => {
@@ -23,7 +24,24 @@ export default class Deck {
     }
   }
 
-  public deal(num: number): Card[] {
+  public deal(num: number, reDeal: boolean = false): Card[] {
+    if (reDeal) {
+      return this.excludeDeck.slice(0, num);
+    }
     return this.cards.slice(0, num);
   }
+
+  public createExcludeDeck(exclude: Card[]): void {
+    this.excludeDeck = [...this.cards, ...exclude].filter(card => {
+      return !(
+        checkCardIncludes(this.cards, card) && checkCardIncludes(exclude, card)
+      );
+    });
+  }
 }
+
+export const checkCardIncludes = (deck: Card[], card: Card): boolean => {
+  return deck.some(
+    item => item.mark === card.mark && item.number === card.number,
+  );
+};

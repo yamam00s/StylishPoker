@@ -8,9 +8,10 @@ import CardClass from '../assets/ts/Card';
 type HandProps = {
   cards: CardClass[];
   isOpen: boolean;
+  setSelectedCards: (selectedCards: CardClass[]) => void;
 };
 type AppState = {
-  isSelected: CardClass[];
+  selectedCards: CardClass[];
 };
 
 class Hand extends Component<HandProps> {
@@ -19,26 +20,25 @@ class Hand extends Component<HandProps> {
   constructor(props: any) {
     super(props);
     this.state = {
-      isSelected: [],
+      selectedCards: [],
     };
   }
 
   private selectCard(card: CardClass): void {
-    const result = [...this.state.isSelected, card];
+    const result = [...this.state.selectedCards, card];
     this.setState({
       isSelected: result,
     });
-    return;
+    this.props.setSelectedCards(result);
   }
 
   render() {
     const {cards, isOpen} = this.props;
-    console.log();
     return (
       <View style={styles.hand}>
         {cards.map((card, index) => {
           const isSelected = (): boolean => {
-            return this.state.isSelected.some(item => item === card);
+            return this.state.selectedCards.some(item => item === card);
           };
           return (
             <TouchableOpacity
