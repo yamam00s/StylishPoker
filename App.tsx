@@ -39,7 +39,7 @@ class App extends Component {
     this.deck.shuffle();
     this.setState({
       hand: this.deck.deal(5),
-      isDeal: true,
+      isDealDone: true,
     });
   }
 
@@ -51,7 +51,7 @@ class App extends Component {
     const dearthLength = 5 - excludeHand.length;
     this.setState({
       hand: [...excludeHand, ...this.deck.deal(dearthLength, true)],
-      isChange: true,
+      isChangeDone: true,
     });
   }
 
