@@ -57,29 +57,25 @@ class App extends Component {
 
   render() {
     const {isDeal} = this.state;
-    const actionButton = (): JSX.Element => {
+    type ActionButton = {title: string; onPress: () => void};
+    const actionButton = (): ActionButton => {
       if (!isDeal) {
-        return (
-          <Button
-            title="カードを配る"
-            color="black"
-            onPress={() => this.dealCards()}
-          />
-        );
+        return {
+          title: 'カードを配る',
+          onPress: () => this.dealCards(),
+        };
       }
-      return (
-        <Button
-          title="チェンジする"
-          color="black"
-          onPress={() => this.changeCards()}
-        />
-      );
+      return {
+        title: 'チェンジする',
+        onPress: () => this.changeCards(),
+      };
     };
+
     return (
       <View style={styles.flexView}>
         <View style={styles.deckArea}>
           <Card isOpen={false} width={100} height={150} />
-          {actionButton()}
+          <Button color="black" {...actionButton()} />
         </View>
         <View style={styles.handArea}>
           {isDeal ? (
