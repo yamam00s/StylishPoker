@@ -10,8 +10,8 @@ import CardClass from './assets/ts/Card';
 type AppState = {
   hand: CardClass[];
   selectedCards: CardClass[];
-  isDeal: boolean;
-  isChange: boolean;
+  isDealDone: boolean;
+  isChangeDone: boolean;
 };
 
 class App extends Component {
@@ -23,8 +23,8 @@ class App extends Component {
     this.state = {
       hand: [],
       selectedCards: [],
-      isDeal: false,
-      isChange: false,
+      isDealDone: false,
+      isChangeDone: false,
     };
     this.deck = new DeckClass();
   }
@@ -56,10 +56,10 @@ class App extends Component {
   }
 
   render() {
-    const {isDeal} = this.state;
+    const {isDealDone} = this.state;
     type ActionButton = {title: string; onPress: () => void};
     const actionButton = (): ActionButton => {
-      if (!isDeal) {
+      if (!isDealDone) {
         return {
           title: 'カードを配る',
           onPress: () => this.dealCards(),
@@ -78,7 +78,7 @@ class App extends Component {
           <Button color="black" {...actionButton()} />
         </View>
         <View style={styles.handArea}>
-          {isDeal ? (
+          {isDealDone ? (
             <Hand
               cards={this.state.hand}
               isOpen={true}
