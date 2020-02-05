@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, JSXElementConstructor} from 'react';
 import {StyleSheet, Button, View, Text} from 'react-native';
 //Components
 import Card from './components/Card';
@@ -10,6 +10,8 @@ import CardClass from './assets/ts/Card';
 type AppState = {
   hand: CardClass[];
   selectedCards: CardClass[];
+  isDeal: boolean;
+  isChange: boolean;
 };
 
 class App extends Component {
@@ -21,6 +23,8 @@ class App extends Component {
     this.state = {
       hand: [],
       selectedCards: [],
+      isDeal: false,
+      isChange: false,
     };
     this.deck = new DeckClass();
   }
@@ -35,6 +39,7 @@ class App extends Component {
     this.deck.shuffle();
     this.setState({
       hand: this.deck.deal(5),
+      isDeal: true,
     });
   }
 
@@ -46,28 +51,35 @@ class App extends Component {
     const dearthLength = 5 - excludeHand.length;
     this.setState({
       hand: [...excludeHand, ...this.deck.deal(dearthLength, true)],
+      isChange: true,
     });
   }
 
   render() {
-    const isDeal: boolean = this.state.hand.length > 0;
+    const {isDeal} = this.state;
+    const actionButton = (): JSX.Element => {
+      if (!isDeal) {
+        return (
+          <Button
+            title="カードを配る"
+            color="black"
+            onPress={() => this.dealCards()}
+          />
+        );
+      }
+      return (
+        <Button
+          title="チェンジする"
+          color="black"
+          onPress={() => this.changeCards()}
+        />
+      );
+    };
     return (
       <View style={styles.flexView}>
         <View style={styles.deckArea}>
           <Card isOpen={false} width={100} height={150} />
-          {!isDeal ? (
-            <Button
-              title="カードを配る"
-              color="black"
-              onPress={() => this.dealCards()}
-            />
-          ) : (
-            <Button
-              title="チェンジする"
-              color="black"
-              onPress={() => this.changeCards()}
-            />
-          )}
+          {actionButton()}
         </View>
         <View style={styles.handArea}>
           {isDeal ? (

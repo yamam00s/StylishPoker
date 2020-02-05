@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
-//Components
+// Components
 import Card from './Card';
 // Class
 import CardClass from '../assets/ts/Card';
