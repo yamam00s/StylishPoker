@@ -1,5 +1,5 @@
-import React, {Component, JSXElementConstructor} from 'react';
-import {StyleSheet, Button, View, Text} from 'react-native';
+import React, {Component} from 'react';
+import {StyleSheet, Button, View, Text, Alert} from 'react-native';
 //Components
 import Card from './components/Card';
 import Hand from './components/Hand';
@@ -56,8 +56,9 @@ class App extends Component {
   }
 
   render() {
-    const {isDealDone} = this.state;
+    const {isDealDone, isChangeDone} = this.state;
     type ActionButton = {title: string; onPress: () => void};
+    const isActionButton: boolean = !isDealDone || !isChangeDone;
     const actionButton = (): ActionButton => {
       if (!isDealDone) {
         return {
@@ -75,7 +76,14 @@ class App extends Component {
       <View style={styles.flexView}>
         <View style={styles.deckArea}>
           <Card isOpen={false} width={100} height={150} />
-          <Button color="black" {...actionButton()} />
+          {isActionButton && <Button color="black" {...actionButton()} />}
+          {isDealDone && (
+            <Button
+              color="black"
+              title="判定する"
+              onPress={() => Alert.alert('判定')}
+            />
+          )}
         </View>
         <View style={styles.handArea}>
           {isDealDone ? (
