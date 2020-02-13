@@ -6,6 +6,7 @@ import Hand from './components/Hand';
 // Class
 import DeckClass, {checkCardIncludes} from './assets/ts/Deck';
 import CardClass from './assets/ts/Card';
+import JudgmentClass from './assets/ts/Judgment';
 
 type AppState = {
   hand: CardClass[];
@@ -55,6 +56,12 @@ class App extends Component {
     });
   }
 
+  private Judge(): void {
+    const judgeClass = new JudgmentClass({hand: this.state.hand});
+    judgeClass.Judge();
+    Alert.alert(judgeClass.result);
+  }
+
   render() {
     const {isDealDone, isChangeDone} = this.state;
     type ActionButton = {title: string; onPress: () => void};
@@ -81,7 +88,7 @@ class App extends Component {
             <Button
               color="black"
               title="判定する"
-              onPress={() => Alert.alert('判定')}
+              onPress={() => this.Judge()}
             />
           )}
         </View>
