@@ -39,14 +39,14 @@ class App extends Component {
   private dealCards(): void {
     this.deck.shuffle();
     this.setState({
-      // hand: this.deck.deal(5),
-      hand: [
-        {mark: '♣️', number: 12},
-        {mark: '♣️', number: 6},
-        {mark: '♣️', number: 1},
-        {mark: '❤️', number: 6},
-        {mark: '♦️', number: 6},
-      ],
+      hand: this.deck.deal(5),
+      // hand: [
+      //   {mark: '♣️', number: 12},
+      //   {mark: '♣️', number: 6},
+      //   {mark: '♣️', number: 1},
+      //   {mark: '❤️', number: 6},
+      //   {mark: '♦️', number: 6},
+      // ],
       isDealDone: true,
     });
   }
@@ -66,7 +66,6 @@ class App extends Component {
   private Judge(): void {
     const judgeClass = new JudgmentClass({hand: this.state.hand});
     judgeClass.Judge();
-    console.log(this.state.hand);
     Alert.alert(judgeClass.result);
   }
 

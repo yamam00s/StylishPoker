@@ -18,16 +18,16 @@ export default class Judgment {
     this._result = result;
   }
 
-  private getPairs(): Card[] {
+  private getPairs(comparison: 'mark' | 'number'): Card[] {
     return this.hand.filter(current => {
       return this.hand.find(
-        item => item !== current && item.number === current.number,
+        item => item !== current && item[comparison] === current[comparison],
       );
     });
   }
 
-  private getPairsNumber(): number {
-    const pairs = this.getPairs();
+  private getNumberPairsLength(): number {
+    const pairs = this.getPairs('number');
     return pairs.length;
   }
 
@@ -42,7 +42,7 @@ export default class Judgment {
   // }
 
   private checkThreeCard(): boolean {
-    if (this.getPairsNumber() === 3) {
+    if (this.getNumberPairsLength() === 3) {
       this.result = 'スリーカード👍👍👍';
       return true;
     }
@@ -50,7 +50,7 @@ export default class Judgment {
   }
 
   private checkTwoPair(): boolean {
-    if (this.getPairsNumber() / 2 === 2) {
+    if (this.getNumberPairsLength() / 2 === 2) {
       this.result = 'ツーペア👍👍';
       return true;
     }
@@ -58,7 +58,7 @@ export default class Judgment {
   }
 
   private checkOnePair(): boolean {
-    if (this.getPairsNumber() / 2 === 1) {
+    if (this.getNumberPairsLength() / 2 === 1) {
       this.result = 'ワンペア👍';
       return true;
     }
