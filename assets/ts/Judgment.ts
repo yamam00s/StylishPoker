@@ -18,14 +18,17 @@ export default class Judgment {
     this._result = result;
   }
 
-  private checkPairNumber(): number {
-    const pairs = this.hand.filter(current => {
+  private getPairs(): Card[] {
+    return this.hand.filter(current => {
       return this.hand.find(
         item => item !== current && item.number === current.number,
       );
     });
-    console.log(pairs);
-    return pairs.length / 2;
+  }
+
+  private getPairsNumber(): number {
+    const pairs = this.getPairs();
+    return pairs.length;
   }
 
   // private checkRoyalStraightFlush(): void {
@@ -38,17 +41,25 @@ export default class Judgment {
   //   );
   // }
 
-  private checkOnePair(): boolean {
-    if (this.checkPairNumber() === 1) {
-      this.result = 'ワンペア👍';
+  private checkThreeCard(): boolean {
+    if (this.getPairsNumber() === 3) {
+      this.result = 'スリーカード👍👍👍';
       return true;
     }
     return false;
   }
 
   private checkTwoPair(): boolean {
-    if (this.checkPairNumber() === 2) {
+    if (this.getPairsNumber() / 2 === 2) {
       this.result = 'ツーペア👍👍';
+      return true;
+    }
+    return false;
+  }
+
+  private checkOnePair(): boolean {
+    if (this.getPairsNumber() / 2 === 1) {
+      this.result = 'ワンペア👍';
       return true;
     }
     return false;
@@ -56,8 +67,8 @@ export default class Judgment {
 
   public Judge(): void {
     /* eslint-disable */
-    if (this.checkOnePair()) return;
+    if (this.checkThreeCard()) return;
     if (this.checkTwoPair()) return;
-
+    if (this.checkOnePair()) return;
   }
 }
