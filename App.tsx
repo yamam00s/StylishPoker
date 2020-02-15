@@ -42,7 +42,7 @@ class App extends Component {
       hand: this.deck.deal(5),
       // hand: [
       //   {mark: '♣️', number: 12},
-      //   {mark: '♣️', number: 6},
+      //   {mark: '♣️', number: 12},
       //   {mark: '♣️', number: 6},
       //   {mark: '♣️', number: 6},
       //   {mark: '❤️', number: 6},

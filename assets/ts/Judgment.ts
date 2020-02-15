@@ -35,28 +35,28 @@ export default class Judgment {
     return pairs.length;
   }
 
-  // private checkRoyalStraightFlush(): void {
-  //   const pokerHand: Card[] = [10, 11, 12, 13, 1].reduce(
-  //     (prev: Card[], num: number) => {
-  //       prev.push(new Card({mark: '♠️', number: num}));
-  //       return prev;
-  //     },
-  //     [],
-  //   );
-  // }
-
-  private checkFlush(): boolean {
-    if (this.isAllSame(this.hand, 'mark')) {
-      this.result = 'フラッシュ✨';
-      return true;
-    }
-    return false;
-  }
+  /* ポーカーの役を判定するメソッド */
 
   private checkFourCard(): boolean {
     const pairs = this.getPairs('number');
     if (this.getNumberPairsLength() === 4 && this.isAllSame(pairs, 'number')) {
       this.result = 'フォーカード👍👍👍👍';
+      return true;
+    }
+    return false;
+  }
+
+  private checkFullHouse(): boolean {
+    if (this.getNumberPairsLength() === 5) {
+      this.result = 'フルハウス🏘';
+      return true;
+    }
+    return false;
+  }
+
+  private checkFlush(): boolean {
+    if (this.isAllSame(this.hand, 'mark')) {
+      this.result = 'フラッシュ✨';
       return true;
     }
     return false;
@@ -87,9 +87,11 @@ export default class Judgment {
   }
 
   public Judge(): void {
+    console.log(this.getNumberPairsLength());
     /* eslint-disable */
-    if (this.checkFlush()) return;
     if (this.checkFourCard()) return;
+    if (this.checkFullHouse()) return;
+    if (this.checkFlush()) return;
     if (this.checkThreeCard()) return;
     if (this.checkTwoPair()) return;
     if (this.checkOnePair()) return;
