@@ -39,14 +39,14 @@ class App extends Component {
   private dealCards(): void {
     this.deck.shuffle();
     this.setState({
-      hand: this.deck.deal(5),
-      // hand: [
-      //   {mark: '♣️', number: 12},
-      //   {mark: '♣️', number: 6},
-      //   {mark: '♣️', number: 1},
-      //   {mark: '❤️', number: 6},
-      //   {mark: '♦️', number: 6},
-      // ],
+      // hand: this.deck.deal(5),
+      hand: [
+        {mark: '♣️', number: 12},
+        {mark: '♣️', number: 6},
+        {mark: '♠️', number: 6},
+        {mark: '❤️', number: 6},
+        {mark: '♦️', number: 6},
+      ],
       isDealDone: true,
     });
   }

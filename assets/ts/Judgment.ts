@@ -18,6 +18,10 @@ export default class Judgment {
     this._result = result;
   }
 
+  private isAllSame(cards: Card[], comparison: 'mark' | 'number'): boolean {
+    return cards.every(current => cards[0][comparison] === current[comparison]);
+  }
+
   private getPairs(comparison: 'mark' | 'number'): Card[] {
     return this.hand.filter(current => {
       return this.hand.find(
@@ -40,6 +44,15 @@ export default class Judgment {
   //     [],
   //   );
   // }
+
+  private checkFourCard(): boolean {
+    const pairs = this.getPairs('number');
+    if (this.getNumberPairsLength() === 4 && this.isAllSame(pairs, 'number')) {
+      this.result = 'フォーカード👍👍👍👍';
+      return true;
+    }
+    return false;
+  }
 
   private checkThreeCard(): boolean {
     if (this.getNumberPairsLength() === 3) {
@@ -67,6 +80,7 @@ export default class Judgment {
 
   public Judge(): void {
     /* eslint-disable */
+    if (this.checkFourCard()) return;
     if (this.checkThreeCard()) return;
     if (this.checkTwoPair()) return;
     if (this.checkOnePair()) return;
