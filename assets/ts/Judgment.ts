@@ -45,6 +45,14 @@ export default class Judgment {
   //   );
   // }
 
+  private checkFlush(): boolean {
+    if (this.isAllSame(this.hand, 'mark')) {
+      this.result = 'フラッシュ✨';
+      return true;
+    }
+    return false;
+  }
+
   private checkFourCard(): boolean {
     const pairs = this.getPairs('number');
     if (this.getNumberPairsLength() === 4 && this.isAllSame(pairs, 'number')) {
@@ -80,6 +88,7 @@ export default class Judgment {
 
   public Judge(): void {
     /* eslint-disable */
+    if (this.checkFlush()) return;
     if (this.checkFourCard()) return;
     if (this.checkThreeCard()) return;
     if (this.checkTwoPair()) return;
