@@ -87,7 +87,6 @@ export default class Judgment {
   }
 
   public Judge(): void {
-    console.log(this.getNumberPairsLength());
     /* eslint-disable */
     if (this.checkFourCard()) return;
     if (this.checkFullHouse()) return;

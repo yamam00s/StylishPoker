@@ -32,6 +32,8 @@ export default class Deck {
   }
 
   public createExcludeDeck(exclude: Card[]): void {
+    // setオブジェクトは重複を消してくれるだけなので用途的に違った
+    // this.excludeDeck = [...new Set([...this.cards, ...exclude])];
     this.excludeDeck = [...this.cards, ...exclude].filter(card => {
       return !(
         checkCardIncludes(this.cards, card) && checkCardIncludes(exclude, card)
