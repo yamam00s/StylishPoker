@@ -18,6 +18,10 @@ export default class Judgment {
     return this._result;
   }
 
+  get handNumber(): number[] {
+    return this.hand.map(current => current.number);
+  }
+
   set result(result: string) {
     this._result = result;
   }
@@ -35,17 +39,17 @@ export default class Judgment {
     return pairs.length;
   }
 
-  private isSerialNumber(): any {
-    const handNumber = this.hand.map(current => current.number);
-    return handNumber
-      .sort((a, b) => a - b)
-      .every((cardNum, i) => i === 0 || cardNum - handNumber[i - 1] === 1);
+  private isSerialNumber(): boolean {
+    const handNumberByAsc = this.handNumber.sort((a, b) => a - b);
+    return handNumberByAsc.every(
+      (cardNum, i) => i === 0 || cardNum - handNumberByAsc[i - 1] === 1,
+    );
   }
 
   /* ポーカーの役を判定するメソッド */
 
   private checkStraightFlush(): boolean {
-    if (this.isSerialNumber() || isAllSame(this.hand, 'mark')) {
+    if (this.isSerialNumber() && isAllSame(this.hand, 'mark')) {
       this.result = 'ストレート・フラッシュ⚾️✨';
       return true;
     }
