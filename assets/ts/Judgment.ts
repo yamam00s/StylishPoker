@@ -44,6 +44,14 @@ export default class Judgment {
 
   /* ポーカーの役を判定するメソッド */
 
+  private checkStraightFlush(): boolean {
+    if (this.isSerialNumber() || isAllSame(this.hand, 'mark')) {
+      this.result = 'ストレート・フラッシュ⚾️✨';
+      return true;
+    }
+    return false;
+  }
+
   private checkFourCard(): boolean {
     const pairs = this.getPairs('number');
     if (this.getNumberPairsLength() === 4 && isAllSame(pairs, 'number')) {
@@ -103,6 +111,7 @@ export default class Judgment {
 
   public Judge(): void {
     /* eslint-disable */
+    if (this.checkStraightFlush()) return;
     if (this.checkFourCard()) return;
     if (this.checkFullHouse()) return;
     if (this.checkFlush()) return;
