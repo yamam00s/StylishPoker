@@ -41,11 +41,11 @@ class App extends Component {
     this.setState({
       hand: this.deck.deal(5),
       // hand: [
-      //   {mark: '♣️', number: 12},
-      //   {mark: '♣️', number: 12},
       //   {mark: '♣️', number: 6},
-      //   {mark: '♣️', number: 6},
-      //   {mark: '❤️', number: 6},
+      //   {mark: '♣️', number: 2},
+      //   {mark: '♣️', number: 3},
+      //   {mark: '♣️', number: 4},
+      //   {mark: '❤️', number: 5},
       // ],
       isDealDone: true,
     });

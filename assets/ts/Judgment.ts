@@ -1,6 +1,10 @@
 /* eslint-disable eslint-comments/no-unlimited-disable */
 import Card from './Card';
 
+const isAllSame = (cards: Card[], comparison: 'mark' | 'number'): boolean => {
+  return cards.every(card => cards[0][comparison] === card[comparison]);
+};
+
 export default class Judgment {
   public readonly hand!: Card[];
   private _result!: string;
@@ -18,14 +22,10 @@ export default class Judgment {
     this._result = result;
   }
 
-  private isAllSame(cards: Card[], comparison: 'mark' | 'number'): boolean {
-    return cards.every(current => cards[0][comparison] === current[comparison]);
-  }
-
   private getPairs(comparison: 'mark' | 'number'): Card[] {
-    return this.hand.filter(current => {
+    return this.hand.filter(card => {
       return this.hand.find(
-        item => item !== current && item[comparison] === current[comparison],
+        item => item !== card && item[comparison] === card[comparison],
       );
     });
   }
@@ -35,11 +35,18 @@ export default class Judgment {
     return pairs.length;
   }
 
+  private isSerialNumber(): any {
+    const handNumber = this.hand.map(current => current.number);
+    return handNumber
+      .sort((a, b) => a - b)
+      .every((cardNum, i) => i === 0 || cardNum - handNumber[i - 1] === 1);
+  }
+
   /* ポーカーの役を判定するメソッド */
 
   private checkFourCard(): boolean {
     const pairs = this.getPairs('number');
-    if (this.getNumberPairsLength() === 4 && this.isAllSame(pairs, 'number')) {
+    if (this.getNumberPairsLength() === 4 && isAllSame(pairs, 'number')) {
       this.result = 'フォーカード👍👍👍👍';
       return true;
     }
@@ -55,8 +62,16 @@ export default class Judgment {
   }
 
   private checkFlush(): boolean {
-    if (this.isAllSame(this.hand, 'mark')) {
+    if (isAllSame(this.hand, 'mark')) {
       this.result = 'フラッシュ✨';
+      return true;
+    }
+    return false;
+  }
+
+  private checkStraight(): boolean {
+    if (this.isSerialNumber()) {
+      this.result = 'ストレート⚾️';
       return true;
     }
     return false;
@@ -91,6 +106,7 @@ export default class Judgment {
     if (this.checkFourCard()) return;
     if (this.checkFullHouse()) return;
     if (this.checkFlush()) return;
+    if (this.checkStraight()) return;
     if (this.checkThreeCard()) return;
     if (this.checkTwoPair()) return;
     if (this.checkOnePair()) return;
