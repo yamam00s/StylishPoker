@@ -48,6 +48,17 @@ export default class Judgment {
 
   /* ポーカーの役を判定するメソッド */
 
+  private checkRoyalStraightFlush(): boolean {
+    const royalNumber = [10, 11, 12, 13, 1];
+    const isRoyalNumber =
+      [...new Set([...royalNumber, ...this.handNumber])].length === 5;
+    if (isAllSame(this.hand, 'mark') && isRoyalNumber) {
+      this.result = 'ロイヤル・ストレート・フラッシュ💵⚾️✨';
+      return true;
+    }
+    return false;
+  }
+
   private checkStraightFlush(): boolean {
     if (this.isSerialNumber() && isAllSame(this.hand, 'mark')) {
       this.result = 'ストレート・フラッシュ⚾️✨';
@@ -115,6 +126,7 @@ export default class Judgment {
 
   public Judge(): void {
     /* eslint-disable */
+    if (this.checkRoyalStraightFlush()) return;
     if (this.checkStraightFlush()) return;
     if (this.checkFourCard()) return;
     if (this.checkFullHouse()) return;
