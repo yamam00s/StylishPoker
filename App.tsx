@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {FC, useState, useEffect} from 'react';
 import {StyleSheet, Button, View, Text, Alert} from 'react-native';
 //Components
 import Card from './components/Card';
@@ -8,112 +8,76 @@ import DeckClass, {checkCardIncludes} from './assets/ts/Deck';
 import CardClass from './assets/ts/Card';
 import JudgmentClass from './assets/ts/Judgment';
 
-type AppState = {
-  hand: CardClass[];
-  selectedCards: CardClass[];
-  isDealDone: boolean;
-  isChangeDone: boolean;
-};
+const deck: DeckClass = new DeckClass();
 
-class App extends Component {
-  public readonly deck: DeckClass;
-  public state: AppState;
+const App: FC = () => {
+  const [hand, setHand] = useState<CardClass[] | []>([]);
+  const [selectedCards, setSelectedCards] = useState<CardClass[] | []>([]);
+  const [isDealDone, setIsDealDone] = useState(false);
+  const [isChangeDone, setIsChangeDone] = useState(false);
+  const isActionButton: boolean = !isDealDone || !isChangeDone;
 
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      hand: [],
-      selectedCards: [],
-      isDealDone: false,
-      isChangeDone: false,
-    };
-    this.deck = new DeckClass();
-  }
+  useEffect(() => {
+    deck.shuffle();
+  });
 
-  public setSelectedCards = (selectedCards: CardClass[]) => {
-    this.setState({
-      selectedCards: selectedCards,
-    });
+  const dealCards = (): void => {
+    setHand(deck.deal(5));
+    setIsDealDone(true);
   };
 
-  private dealCards(): void {
-    this.deck.shuffle();
-    this.setState({
-      hand: this.deck.deal(5),
-      // hand: [
-      //   {mark: '♣️', number: 6},
-      //   {mark: '♣️', number: 2},
-      //   {mark: '♣️', number: 3},
-      //   {mark: '♣️', number: 4},
-      //   {mark: '❤️', number: 5},
-      // ],
-      isDealDone: true,
-    });
-  }
-
-  private changeCards(): void {
-    this.deck.createExcludeDeck(this.state.hand);
-    const excludeHand = this.state.hand.filter(
-      card => !checkCardIncludes(this.state.selectedCards, card),
+  const changeCards = (): void => {
+    deck.createExcludeDeck(hand);
+    const excludeHand = hand.filter(
+      card => !checkCardIncludes(selectedCards, card),
     );
     const dearthLength = 5 - excludeHand.length;
-    this.setState({
-      hand: [...excludeHand, ...this.deck.deal(dearthLength, true)],
-      isChangeDone: true,
-    });
-  }
+    setHand([...excludeHand, ...deck.deal(dearthLength, true)]);
+    setIsChangeDone(true);
+  };
 
-  private Judge(): void {
-    const judgeClass = new JudgmentClass({hand: this.state.hand});
+  const Judge = (): void => {
+    const judgeClass = new JudgmentClass({hand: hand});
     judgeClass.Judge();
     Alert.alert(judgeClass.result);
-  }
+  };
 
-  render() {
-    const {isDealDone, isChangeDone} = this.state;
-    type ActionButton = {title: string; onPress: () => void};
-    const isActionButton: boolean = !isDealDone || !isChangeDone;
-    const actionButton = (): ActionButton => {
-      if (!isDealDone) {
-        return {
-          title: 'カードを配る',
-          onPress: () => this.dealCards(),
-        };
-      }
+  const actionButton = () => {
+    if (!isDealDone) {
       return {
-        title: 'チェンジする',
-        onPress: () => this.changeCards(),
+        title: 'カードを配る',
+        onPress: () => dealCards(),
       };
+    }
+    return {
+      title: 'チェンジする',
+      onPress: () => changeCards(),
     };
+  };
 
-    return (
-      <View style={styles.flexView}>
-        <View style={styles.deckArea}>
-          <Card isOpen={false} width={100} height={150} />
-          {isActionButton && <Button color="black" {...actionButton()} />}
-          {isDealDone && (
-            <Button
-              color="black"
-              title="判定する"
-              onPress={() => this.Judge()}
-            />
-          )}
-        </View>
-        <View style={styles.handArea}>
-          {isDealDone ? (
-            <Hand
-              cards={this.state.hand}
-              isOpen={true}
-              setSelectedCards={this.setSelectedCards}
-            />
-          ) : (
-            <Text>カードを配れ</Text>
-          )}
-        </View>
+  return (
+    <View style={styles.flexView}>
+      <View style={styles.deckArea}>
+        <Card isOpen={false} width={100} height={150} />
+        {isActionButton && <Button color="black" {...actionButton()} />}
+        {isDealDone && (
+          <Button color="black" title="判定する" onPress={() => Judge()} />
+        )}
       </View>
-    );
-  }
-}
+      <View style={styles.handArea}>
+        {isDealDone ? (
+          <Hand
+            cards={hand}
+            isOpen={true}
+            setSelectedCardsProp={setSelectedCards}
+          />
+        ) : (
+          <Text>カードを配れ</Text>
+        )}
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   flexView: {

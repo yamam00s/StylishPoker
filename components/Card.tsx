@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {FC} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 // Class
 import CardClass from '../assets/ts/Card';
@@ -10,27 +10,25 @@ type CardProps = {
   card?: CardClass;
 };
 
-class Card extends Component<CardProps, {}> {
-  render() {
-    const {isOpen, width, height, card} = this.props;
-    return (
-      <View>
-        {isOpen ? (
-          <View style={stylesCardSize(width, height).cardSize}>
-            <View style={styles.cardFace}>
-              <Text style={styles.cardFaceNumberTop}>{card?.number}</Text>
-              <Text>{card?.mark}</Text>
-              <Text style={styles.cardFaceNumberBottom}>{card?.number}</Text>
-            </View>
+const Card: FC<CardProps> = data => {
+  const {isOpen, width, height, card} = data;
+  return (
+    <View>
+      {isOpen ? (
+        <View style={stylesCardSize(width, height).cardSize}>
+          <View style={styles.cardFace}>
+            <Text style={styles.cardFaceNumberTop}>{card?.number}</Text>
+            <Text>{card?.mark}</Text>
+            <Text style={styles.cardFaceNumberBottom}>{card?.number}</Text>
           </View>
-        ) : (
-          <View
-            style={[stylesCardSize(width, height).cardSize, styles.cardBack]}
-          />
-        )}
-      </View>
-    );
-  }
+        </View>
+      ) : (
+        <View
+          style={[stylesCardSize(width, height).cardSize, styles.cardBack]}
+        />
+      )}
+    </View>
+  );
 }
 
 const stylesCardSize =
