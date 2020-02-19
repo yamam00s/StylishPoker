@@ -11,8 +11,8 @@ import JudgmentClass from './assets/ts/Judgment';
 const deck: DeckClass = new DeckClass();
 
 const App: FC = () => {
-  const [hand, setHand] = useState<CardClass[] | []>([]);
-  const [selectedCards, setSelectedCards] = useState<CardClass[] | []>([]);
+  const [hand, setHand] = useState<CardClass[]>([]);
+  const [selectedCards, setSelectedCards] = useState<CardClass[]>([]);
   const [isDealDone, setIsDealDone] = useState(false);
   const [isChangeDone, setIsChangeDone] = useState(false);
   const isActionButton: boolean = !isDealDone || !isChangeDone;

@@ -13,7 +13,7 @@ type HandProps = {
 
 const Hand: FC<HandProps> = data => {
   const {cards, isOpen, setSelectedCardsProp} = data;
-  const [selectedCards, setSelectedCards] = useState<CardClass[] | []>([]);
+  const [selectedCards, setSelectedCards] = useState<CardClass[]>([]);
 
   const selectCard = (card: CardClass): void => {
     const result = [...selectedCards, card];
